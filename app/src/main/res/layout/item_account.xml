@@ -14,10 +14,15 @@
         android:orientation="vertical"
         android:padding="12dp">
 
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switcher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
         <TextView
             android:id="@+id/tv_name"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:text="Visa Gold"
             android:textSize="18dp"
             android:textStyle="bold" />
@@ -25,8 +30,29 @@
         <TextView
             android:id="@+id/tv_balance"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="1000 UDS"
+            android:layout_height="wrap_content"
+            android:text="1000 USD"
             android:textSize="16dp" />
+        <LinearLayout
+
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <Button
+                android:layout_margin="16dp"
+                android:id="@+id/btn_edit"
+                android:text="Изменить"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <Button
+                android:layout_margin="16dp"
+                android:id="@+id/btn_delete"
+                android:text="Удалить"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+        </LinearLayout>
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>

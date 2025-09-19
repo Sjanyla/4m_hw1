@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.a4m_hw1.databinding.ActivityMainBinding
 import com.example.a4m_hw1.data.model.Account
+import com.example.a4m_hw1.data.model.AccountState
 import com.example.a4m_hw1.databinding.DialogAddAccountBinding
 import com.example.a4m_hw1.domain.presenter.AccountContracts
 import com.example.a4m_hw1.domain.presenter.AccountPresenter
@@ -27,6 +28,8 @@ class MainActivity : AppCompatActivity(), AccountContracts.View {
         initAdapter()
         initClicks()
     }
+
+
     private fun initClicks () {
         with(binding){
             btnAdd.setOnClickListener {
@@ -50,12 +53,51 @@ class MainActivity : AppCompatActivity(), AccountContracts.View {
                 }
                 .setNegativeButton("Отмена",null)
                 .show()
+
         }
 
+
+    }
+    private fun showEditDialog(account: Account) {
+        val binding = DialogAddAccountBinding.inflate(LayoutInflater.from(this))
+        with(binding) {
+
+            etName.setText(account.name)
+            etBalance.setText(account.balance.toString())
+            etCurrency.setText(account.currency)
+
+            AlertDialog.Builder(this@MainActivity)
+                .setTitle("Изменить счет")
+                .setView(binding.root)
+                .setPositiveButton("Изменить") { _, _ ->
+
+                    val updatedAccount=account.copy(
+                        name = etName.text.toString(),
+                        currency = etCurrency.text.toString(),
+                        balance = etBalance.text.toString().toInt()
+                    )
+
+                    presenter.updateFullyAccount(updatedAccount)
+                }
+                .setNegativeButton("Отмена", null)
+                .show()
+
+
+        }
     }
     private fun initAdapter(){
         with(binding){
-            adapter= AccountAdapter()
+            adapter= AccountAdapter(
+                onEdit = {
+                    showEditDialog(it)
+                },
+                onDelete = {
+                    presenter.deleteAccount(it)
+                },
+                onSwitchToggle = {id, isChecked->
+                    presenter.updateStateAccount(id, AccountState(isChecked))
+                }
+            )
             recyclerView.layoutManager= LinearLayoutManager(this@MainActivity)
             recyclerView.adapter= adapter
 
